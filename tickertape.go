@@ -67,6 +67,7 @@ func (t tickerTape) publishTime(time time.Time, ctx context.Context) (string, er
 	result := topic.Publish(ctx, &pubsub.Message{
 		Data: []byte(fmt.Sprintf("Current time %v", time)),
 	})
+	fmt.Printf("Sent message for time %v", time)
 	// Block until the result is returned and a server-generated
 	// ID is returned for the published message.
 	id, err := result.Get(ctx)
