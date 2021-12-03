@@ -30,27 +30,21 @@ func (t tickerTape) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ticker := time.NewTicker(1 * time.Second)
-	done := make(chan bool)
+
 	go func() {
-		for {
-			select {
-			case <-done:
+		for time := range ticker.C {
+			_, err := t.publishTime(time, r.Context())
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				w.Write([]byte(err.Error()))
 				return
-			case time := <-ticker.C:
-				_, err := t.publishTime(time, r.Context())
-				if err != nil {
-					w.WriteHeader(http.StatusInternalServerError)
-					w.Write([]byte(err.Error()))
-					return
-				}
 			}
 		}
 	}()
 
+	// wait for 10 seconds
 	time.Sleep(time.Duration(duration) * time.Second)
 	ticker.Stop()
-	done <- true
-	fmt.Println("Ticker stopped")
 
 	w.WriteHeader(http.StatusOK)
 	return
