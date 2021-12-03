@@ -27,7 +27,6 @@ func (t tickerTape) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	duration, err := strconv.Atoi(qDuration)
 	if err != nil {
 		duration = 30
-		return
 	}
 
 	ticker := time.NewTicker(1 * time.Second)
