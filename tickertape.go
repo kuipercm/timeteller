@@ -46,7 +46,7 @@ func (t tickerTape) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
-	time.Sleep(time.Duration(duration) * time.Millisecond)
+	time.Sleep(time.Duration(duration) * time.Second)
 	ticker.Stop()
 	done <- true
 	fmt.Println("Ticker stopped")
