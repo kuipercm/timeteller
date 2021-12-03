@@ -40,6 +40,7 @@ func (t tickerTape) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				_, err := t.publishTime(time, r.Context())
 				if err != nil {
 					w.WriteHeader(http.StatusInternalServerError)
+					w.Write([]byte(err.Error()))
 					return
 				}
 			}
